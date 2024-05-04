@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/seleccionarRol"
+        android:layout_width="327dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="188dp"
+        android:gravity="center"
+        android:text="@string/selecciona_rol"
+        android:textColor="#545f71"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/compradorSeleccionInicioSesion"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="416dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/user"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/comprador"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/socioSeleccionInicioSesion"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="484dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/socio"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/socio"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/granjeroSeleccionInicioSesion"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="352dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/granjero"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/granjero"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/volverSeleccionRolInicioSesion"
+        android:layout_width="42dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="76dp"
+        android:contentDescription="@string/regresar"
+        android:src="@mipmap/boton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/informacionSeleccionarRol"
+        android:layout_width="327dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="260dp"
+        android:gravity="center"
+        android:text="@string/informacionseleccion"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

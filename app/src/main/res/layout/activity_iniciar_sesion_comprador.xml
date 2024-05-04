@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".IniciarSesionCompradorActivity">
+
+    <TextView
+        android:id="@+id/textBienvenido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="204dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/Bienvenido"
+        android:textColor="#545f71"
+        android:textSize="27sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textIniciarsesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/IniciarSesion"
+        android:textColor="#545f71"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textBienvenido" />
+
+    <EditText
+        android:id="@+id/editTextContraseña"
+        android:layout_width="327dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="48dp"
+        android:drawableStart="@mipmap/password"
+        android:drawablePadding="8dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/Contraseña"
+        android:inputType="textPassword"
+        android:textColor="#545f71"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextCorreo" />
+
+    <ImageView
+        android:id="@+id/btnvolverIniciarSesion"
+        android:layout_width="42dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="120dp"
+        android:contentDescription="@string/regresar"
+        android:src="@mipmap/boton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextCorreo"
+        android:layout_width="327dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="48dp"
+        android:drawableStart="@mipmap/correo"
+        android:drawablePadding="10dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/Correo"
+        android:inputType="text"
+        android:textColor="#545f71"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textIniciarsesion" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnIngresar"
+        android:layout_width="267dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="132dp"
+        android:background="#36CC7C"
+        android:text="@string/btn_ingresar"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextContraseña" />
+
+    <TextView
+        android:id="@+id/textOlvideContraseña"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="212dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/olvide_contraseña"
+        android:textColor="#545f71"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextContraseña" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/crearCuentaInfoCampesino"
+        android:layout_width="327dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="136dp"
+        android:gravity="center"
+        android:text="@string/informacionCrear"
+        android:textColor="#545f71"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
+
+
+    <TextView
+        android:id="@+id/infoCrearCuenta"
+        android:layout_width="327dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="192dp"
+        android:gravity="center"
+        android:text="@string/informacionCrearCuenta"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/nombreCrearCuentaCampesino"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="300dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/userv"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="@string/nombreCrearCuenta"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/apellidoCrearCuentaCampesino"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="356dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/userv"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="@string/apellidoCrearCuenta"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/correoCrearcuentaCampesino"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="416dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/correo"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="@string/correoCrearCuenta"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/contrase単aCrearCueentaCampesino"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="480dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/password"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="@string/contraseñaCrearCuenta"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/Confirmarcontrase単aCrearCueentaCampesino"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="536dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/password"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="@string/ConfircontraseñaCrearCuenta"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nombreGranjaCampesino"
+        android:layout_width="327sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="592dp"
+        android:background="@drawable/rectangle_background"
+        android:drawableStart="@mipmap/campesino"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="@string/nombreGranja"
+        android:textColor="#545f71"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnConfirmarCampesino"
+        android:layout_width="267dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="672dp"
+        android:background="#36CC7C"
+        android:text="@string/btn_register"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnVolverRegistroCampesino"
+        android:layout_width="42dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/regresar"
+        android:src="@mipmap/boton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

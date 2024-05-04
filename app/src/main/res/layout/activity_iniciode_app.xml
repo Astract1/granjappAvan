@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="174dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnIniciarSesion"
+            android:layout_width="267dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="536dp"
+            android:background="#36CC7C"
+            android:text="@string/btn_login"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegistrarse"
+            android:layout_width="267dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="616dp"
+            android:background="#36CC7C"
+            android:text="@string/btn_register"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnIniciarSesion" />
+
+        <ImageView
+            android:layout_width="278dp"
+            android:layout_height="261dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="192dp"
+            android:src="@mipmap/imagen"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
