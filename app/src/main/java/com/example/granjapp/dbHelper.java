@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +63,9 @@ public class dbHelper extends SQLiteOpenHelper {
                 UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_ENTRADA + " TEXT NOT NULL," +
                 UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_SALIDA + " TEXT NOT NULL," +
                 UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA + " TEXT NOT NULL," +
-                UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO + " TEXT DEFAULT 'FALSE'" +
+                UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO + " TEXT DEFAULT 'FALSE'," +
+                UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LAITUD + " REAL NOT NULL ," +
+                UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LONGITUD + " REAL NOT NULL" +
 
                 ");";
 
@@ -180,7 +184,7 @@ public class dbHelper extends SQLiteOpenHelper {
         return existeCorreo;
     }
 
-    public long insertarEntrada(int idUsuario, String direccion, String horaEntrada, String horaSalida, String dia, String estado) {
+    public long insertarEntrada(int idUsuario, String direccion, String horaEntrada, String horaSalida, String dia, String estado, double latitud, double longitud) {
         // Verificar los valores de entrada
         if (idUsuario < 0 || direccion.isEmpty() || horaEntrada.isEmpty() || horaSalida.isEmpty() || dia.isEmpty() || estado.isEmpty()) {
             Log.e("ERROR", "Valores de entrada no válidos");
@@ -198,6 +202,9 @@ public class dbHelper extends SQLiteOpenHelper {
             values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_SALIDA, horaSalida);
             values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA, dia);
             values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO, estado);
+            values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LAITUD, latitud);
+            values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LONGITUD, longitud);
+
 
             // Insertar el registro y obtener el ID insertado
             resultado = db.insert(UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES, null, values);
@@ -362,7 +369,7 @@ public class dbHelper extends SQLiteOpenHelper {
                         String dia = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA));
                         String estado = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO));
 
-                        PuntoVenta puntoVenta = new PuntoVenta(puntoVentaId, direccion, horaEntrada, horaSalida, dia, estado);
+                        PuntoVenta puntoVenta = new PuntoVenta(puntoVentaId, direccion, horaEntrada, horaSalida, dia, estado, "null", 0, 0);
                         puntosVenta.add(puntoVenta);
                     } while (cursor.moveToNext());
                 }
@@ -377,6 +384,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
         return puntosVenta;
     }
+
 
     public long obtenerUltimoIdInsertado(int idUsuario) {
         SQLiteDatabase db = null;
@@ -439,6 +447,75 @@ public class dbHelper extends SQLiteOpenHelper {
         }
         return idPuntoVentaActivo;
     }
+
+
+    public List<PuntoVenta> obtenerPuntosVentaActivos() {
+        List<PuntoVenta> puntosVenta = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try {
+            String[] projection = {
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry._ID,
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIRECCION,
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LAITUD, // Nueva columna de latitud
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LONGITUD, // Nueva columna de longitud
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_ENTRADA,
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_SALIDA,
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA,
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO,
+                    UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS + "." + UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA
+            };
+
+            String selection = UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO + " = ?";
+            String[] selectionArgs = {"true"};
+
+            String tableName = UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES +
+                    " INNER JOIN " + UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS +
+                    " ON " + UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ID_USUARIO +
+                    " = " + UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS + "." + UsuariosContract.CampesinoEntry._ID;
+
+            Cursor cursor = db.query(
+                    tableName,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        int puntoVentaId = cursor.getInt(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry._ID));
+                        String direccion = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIRECCION));
+                        double latitud = cursor.getDouble(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LAITUD));
+                        double longitud = cursor.getDouble(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LONGITUD));
+                        String horaEntrada = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_ENTRADA));
+                        String horaSalida = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_SALIDA));
+                        String dia = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA));
+                        String estado = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO));
+                        String nombreGranja = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA));
+
+                        PuntoVenta puntoVenta = new PuntoVenta(puntoVentaId, direccion, horaEntrada, horaSalida, dia, estado, nombreGranja, latitud, longitud);
+                        puntosVenta.add(puntoVenta);
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("ERROR", "Error al obtener los puntos de venta activos: " + e.getMessage());
+            // Manejar el error según sea necesario
+        } finally {
+            db.close();
+        }
+
+        return puntosVenta;
+    }
+
+
+
+
 
 }
 

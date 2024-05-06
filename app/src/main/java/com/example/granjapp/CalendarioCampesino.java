@@ -2,26 +2,23 @@ package com.example.granjapp;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,11 +27,12 @@ import java.util.Locale;
 public class CalendarioCampesino extends AppCompatActivity {
 
     private CalendarView calendarView;
-    private TextClock textClock;
-    private TextView fechaHoraTextView;
+
     TextView HorarioSalida;
     TextView HorarioEntrada;
     private String direccion;
+    private double latitud;
+    private double longitud;
     private Calendar selectedCalendar;
 
 
@@ -45,9 +43,14 @@ public class CalendarioCampesino extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario_campesino);
 
-        int idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
         Intent intent = getIntent();
         direccion = intent.getStringExtra("direccion");
+        latitud = intent.getDoubleExtra("latitud", 0.0);
+         longitud = intent.getDoubleExtra("longitud", 0.0);
+        Log.d("DEBUG", "Dirección: " + direccion);
+        Log.d("DEBUG", "Latitud: " + latitud);
+        Log.d("DEBUG", "Longitud: " + longitud);
+
 
         EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -83,7 +86,7 @@ public class CalendarioCampesino extends AppCompatActivity {
     }
 
     public void mostrarFechaYHora() {
-            // Obtener la fecha seleccionada del calendario
+        // Obtener la fecha seleccionada del calendario
         long selectedDateMillis = selectedCalendar.getTimeInMillis();
         Date selectedDate = new Date(selectedDateMillis);
 
@@ -93,31 +96,52 @@ public class CalendarioCampesino extends AppCompatActivity {
         String horaEntrada = HorarioEntrada.getText().toString();
         String horaSalida = HorarioSalida.getText().toString();
 
-        dbHelper dbHelperInstance = new dbHelper(CalendarioCampesino.this);
-        // Obtener el ID del usuario desde SharedPreferences
-        int idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
-
-        long idTabla = dbHelperInstance.obtenerUltimoIdInsertado(idUsuario);
-        // Obtener el ID de la tabla
-        String estadoPuntoVenta;
+        // Verificar que la hora de entrada no sea menor que la hora de salida
         try {
-            estadoPuntoVenta = dbHelperInstance.obtenerEstadoPuntoVenta(idUsuario);
-        } catch (Exception e) {
-            Toast.makeText(this, "Error al verificar el estado del punto de venta", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+            Date horaEntradaDate = timeFormat.parse(horaEntrada);
+            Date horaSalidaDate = timeFormat.parse(horaSalida);
 
-        // Verificar si la entrada ya existe
-        if (estadoPuntoVenta != null && estadoPuntoVenta.equals("true") ) {
-            // Si existe, actualizar el estado de la entrada existente a 'false'
-            dbHelperInstance.actualizarEstadoEntrada(idUsuario, idTabla, "false");
-        }
-        // Guardar la nueva entrada con el estado 'true'
-        guardarEntrada(fechaSeleccionada, horaEntrada, horaSalida, direccion, "true");
+            Calendar entradaCalendar = Calendar.getInstance();
+            Calendar salidaCalendar = Calendar.getInstance();
+            entradaCalendar.setTime(horaEntradaDate);
+            salidaCalendar.setTime(horaSalidaDate);
 
-        Intent newIntent = new Intent(CalendarioCampesino.this, MenuGranjeroActivity.class);
-        startActivity(newIntent);
+
+            if (entradaCalendar.before(salidaCalendar)) {
+                dbHelper dbHelperInstance = new dbHelper(CalendarioCampesino.this);
+                // Obtener el ID del usuario desde SharedPreferences
+                int idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
+
+                long idTabla = dbHelperInstance.obtenerUltimoIdInsertado(idUsuario);
+                // Obtener el ID de la tabla
+                String estadoPuntoVenta;
+                try {
+                    estadoPuntoVenta = dbHelperInstance.obtenerEstadoPuntoVenta(idUsuario);
+                } catch (Exception e) {
+                    Toast.makeText(this, "Error al verificar el estado del punto de venta", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Verificar si la entrada ya existe
+                if (estadoPuntoVenta != null && estadoPuntoVenta.equals("true")) {
+                    // Si existe, actualizar el estado de la entrada existente a 'false'
+                    dbHelperInstance.actualizarEstadoEntrada(idUsuario, idTabla, "false");
+                }
+                // Guardar la nueva entrada con el estado 'true'
+                guardarEntrada(fechaSeleccionada, horaEntrada, horaSalida, direccion, "true", latitud, longitud);
+
+                Intent newIntent = new Intent(CalendarioCampesino.this, MenuGranjeroActivity.class);
+                startActivity(newIntent);
+            } else {
+                Toast.makeText(this, "La hora de entrada debe ser anterior a la hora de salida", Toast.LENGTH_SHORT).show();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error al analizar las horas", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
 
 
@@ -173,7 +197,7 @@ public class CalendarioCampesino extends AppCompatActivity {
         timePickerDialog.show();
     }
 
-    private void guardarEntrada(String fecha, String horaEntrada, String horaSalida, String direccion, String estado) {
+    private void guardarEntrada(String fecha, String horaEntrada, String horaSalida, String direccion, String estado, double latitud, double longitud) {
         dbHelper dbHelperInstance = null;
         try {
             dbHelperInstance = new dbHelper(this);
@@ -197,7 +221,9 @@ public class CalendarioCampesino extends AppCompatActivity {
                 }
             }
             Log.d("DEBUG", "Insertando nueva entrada");
-            long resultado = dbHelperInstance.insertarEntrada(idUsuario, direccion, horaEntrada, horaSalida, fecha, estado);
+            Log.d("DEBUG", "Latitud: " + latitud);
+            Log.d("DEBUG", "Longitud: " + longitud);
+            long resultado = dbHelperInstance.insertarEntrada(idUsuario, direccion, horaEntrada, horaSalida, fecha, estado, latitud, longitud);
             Log.d("DEBUG", "Resultado de la inserción: " + resultado);
             if (resultado != -1) {
                 Toast.makeText(this, "Entrada guardada correctamente", Toast.LENGTH_SHORT).show();

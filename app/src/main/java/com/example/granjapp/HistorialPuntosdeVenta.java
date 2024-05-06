@@ -3,20 +3,16 @@ package com.example.granjapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
+
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.ContextCompat;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -105,7 +101,18 @@ public class HistorialPuntosdeVenta extends AppCompatActivity {
 
     private List<PuntoVenta> obtenerPuntosDeVentaDesdeBD() {
         int idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
-        return dbHelper.obtenerTodosLosPuntosVenta(idUsuario, false);
+        List<PuntoVenta> puntosDeVenta = dbHelper.obtenerTodosLosPuntosVenta(idUsuario, false);
+
+        // Imprimir la información de cada PuntoVenta
+        for (PuntoVenta puntoVenta : puntosDeVenta) {
+            Log.d("Punto de venta", "ID: " + puntoVenta.getId() +
+                    ", Dirección: " + puntoVenta.getDireccion() +
+                    ", Hora de entrada: " + puntoVenta.getHoraEntrada() +
+                    ", Hora de salida: " + puntoVenta.getHoraSalida() +
+                    ", Estado: " + puntoVenta.getEstado());
+        }
+
+        return puntosDeVenta;
     }
 
     private int obtenerIdUsuarioDesdeSharedPreferences() {
@@ -123,4 +130,6 @@ public class HistorialPuntosdeVenta extends AppCompatActivity {
         }
         return true;
     }
+
+
 }

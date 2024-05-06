@@ -83,8 +83,14 @@
 
     <string name="hora_salida">Hora Salida</string>
     <string name="hora_entrada">Hora Entrada</string>
-    <string name = "fecha">Fecha</string>
+    <string name="fecha">Fecha</string>
     <string name="nombre_Punto">Direccion del punto</string>
-    <string name = "ElementosVaciosG">No hay elementos que mostrar, por favor agrega un punto de venta</string>
-    <string name = "CancelarPunto">Cancelar punto de venta</string>
+    <string name="ElementosVaciosG">No hay elementos que mostrar, por favor agrega un punto de venta</string>
+    <string name = "ElementosVaciosC">No hay puntos de venta disponible, por el momento</string>
+    <string name="CancelarPunto">Cancelar punto de venta</string>
+    <string name="textMapComprador">Ingresa tu dirección</string>
+    <string name="ubicaciontxtComprador">Digite la ubicación para mostrar los puntos \n de venta cercanos</string>
+    <string name="distanciaPuntoVenta">Distancia del punto de venta</string>
+
+    <string name= "direccionPunto">Dirección del punto de venta</string>
 </resources>

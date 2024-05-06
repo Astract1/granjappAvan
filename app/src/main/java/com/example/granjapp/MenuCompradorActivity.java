@@ -1,5 +1,6 @@
 package com.example.granjapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -20,5 +21,11 @@ public class MenuCompradorActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        findViewById(R.id.mapaComprador).setOnClickListener(v -> {
+            Intent intent = new Intent(this, MapaCompradorActivity.class);
+            startActivity(intent);
+        });
+
+        }
     }
-}

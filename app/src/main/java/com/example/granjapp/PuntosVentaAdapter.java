@@ -52,11 +52,11 @@ public class PuntosVentaAdapter extends RecyclerView.Adapter<PuntosVentaAdapter.
         ViewHolder(View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.imagenHistorial);
-            direccion = itemView.findViewById(R.id.DireccionPunto);
-            horaEntrada = itemView.findViewById(R.id.HoraIncio);
-            horaSalida = itemView.findViewById(R.id.HoraFin);
-            fecha = itemView.findViewById(R.id.fechaPunto);
-            estado = itemView.findViewById(R.id.estadoPunto);
+            direccion = itemView.findViewById(R.id.DireccionPuntoG);
+            horaEntrada = itemView.findViewById(R.id.HoraIncioG);
+            horaSalida = itemView.findViewById(R.id.HoraFinG);
+            fecha = itemView.findViewById(R.id.fechaPuntoG);
+            estado = itemView.findViewById(R.id.estadoPuntoG);
         }
 
         void bindData(final PuntoVenta item) {
@@ -72,7 +72,6 @@ public class PuntosVentaAdapter extends RecyclerView.Adapter<PuntosVentaAdapter.
                 estado.setText("Inactivo");
                 estado.setTextColor(ContextCompat.getColor(context, R.color.rojo));
             }
-
         }
 
     }

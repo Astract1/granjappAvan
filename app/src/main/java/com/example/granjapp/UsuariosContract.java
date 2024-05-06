@@ -44,5 +44,8 @@
             public static final String COLUMN_DIA = "dia";
             public static final String COLUMN_ESTADO =  "Estado";
             public static final String COLUMN_ID = "_id";;
+
+            public static final String COLUM_LAITUD = "latitud";
+            public static final String COLUM_LONGITUD = "longitud";
         }
     }

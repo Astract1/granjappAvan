@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:map="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    tools:context=".MapaCompradorActivity">
 
 
     <ImageView
-        android:id="@+id/botonRegresarMapa"
+        android:id="@+id/botonRegresarMapaComprador"
         android:layout_width="42dp"
         android:layout_height="57dp"
         android:layout_marginStart="28dp"
@@ -19,11 +19,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
-        android:id="@+id/textMapa"
-        android:layout_width="69dp"
-        android:layout_height="58dp"
+        android:id="@+id/textMapaComprador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="152dp"
         android:layout_marginTop="28dp"
         android:fontFamily="sans-serif"
@@ -35,38 +34,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/infomap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="96dp"
         android:layout_marginTop="84dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
-        android:text="@string/infoMapa"
+
+        android:text="@string/textMapComprador"
         android:textColor="#545f71"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/DireccionTxtManual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="440dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:text="@string/ubicaciontxt"
-        android:textColor="#545f71"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
+        android:id="@+id/mapaComprador"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -75,6 +61,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.255"
         tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/DireccionTxtManualComprador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="440dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/ubicaciontxtComprador"
+        android:textColor="#545f71"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="347dp"
@@ -86,14 +86,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/autocomplete_fragment"
+            android:id="@+id/autocomplete_fragmentComprador"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
     </androidx.cardview.widget.CardView>
 
+
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnBuscarPuntosComprador"
+        android:id="@+id/btnBuscarPuntosCompradorComprador"
         android:layout_width="267dp"
         android:layout_height="42dp"
         android:layout_marginStart="72dp"
@@ -105,7 +106,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnUbiacionActual"
+        android:id="@+id/btnUbiacionActualComprador"
         android:layout_width="267dp"
         android:layout_height="42dp"
         android:layout_marginStart="72dp"
@@ -115,6 +116,8 @@
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

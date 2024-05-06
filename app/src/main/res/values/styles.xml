@@ -6,4 +6,12 @@
         <item name="android:textStyle">bold</item>
         <item name="android:padding">5dp</item>
     </style>
+
+
+    <style name="Widget.MaterialComponents.BottomSheet.DragHandle" parent="Widget.Material3.BottomSheet.DragHandle">
+        <item name="tint">?colorOnSurface</item>
+        <!--Alpha can be added optionally to achieve nice color blend-->
+        <item name="android:alpha">0.3</item>
+    </style>
+
 </resources>

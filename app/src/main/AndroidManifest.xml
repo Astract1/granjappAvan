@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Granjapp">
         <activity
+            android:name=".CargarPuntosVentas"
+            android:exported="false" />
+        <activity
+            android:name=".MapaCompradorActivity"
+            android:exported="false" />
+        <activity
             android:name=".HistorialPuntosdeVenta"
             android:exported="false" />
         <activity

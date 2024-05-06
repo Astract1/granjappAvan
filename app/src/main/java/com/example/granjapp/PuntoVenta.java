@@ -7,14 +7,24 @@ public class PuntoVenta {
     private String horaSalida;
     private String fecha;
     private String estado;
+    private String nombre;
 
-    public PuntoVenta(int id, String direccion, String horaEntrada, String horaSalida, String fecha, String estado) {
+    private double latitud;
+    private double longitud;
+
+
+    public PuntoVenta(int id, String direccion, String horaEntrada, String horaSalida, String fecha, String estado, String nombre, double latitud, double longitud) {
         this.id = id;
         this.direccion = direccion;
         this.horaEntrada = horaEntrada;
         this.horaSalida = horaSalida;
         this.fecha = fecha;
         this.estado = estado;
+        this.nombre = nombre;
+        this.latitud = latitud;
+        this.longitud = longitud;
+
+
     }
 
     // Getters y Setters
@@ -66,4 +76,29 @@ public class PuntoVenta {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
 }

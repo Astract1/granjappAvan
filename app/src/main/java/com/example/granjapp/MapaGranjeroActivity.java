@@ -2,26 +2,19 @@
 
     import android.Manifest;
     import android.content.Context;
-    import android.content.DialogInterface;
     import android.content.Intent;
     import android.content.SharedPreferences;
     import android.content.pm.PackageManager;
-    import android.graphics.Bitmap;
-    import android.graphics.drawable.BitmapDrawable;
     import android.location.Address;
     import android.location.Geocoder;
     import android.location.Location;
     import android.os.Bundle;
     import android.util.Log;
     import android.view.View;
-    import android.widget.Button;
     import android.widget.Toast;
-
     import androidx.annotation.NonNull;
-    import androidx.appcompat.app.AlertDialog;
     import androidx.appcompat.app.AppCompatActivity;
     import androidx.core.app.ActivityCompat;
-
     import com.google.android.gms.common.api.Status;
     import com.google.android.gms.location.FusedLocationProviderClient;
     import com.google.android.gms.location.LocationServices;
@@ -29,7 +22,6 @@
     import com.google.android.gms.maps.GoogleMap;
     import com.google.android.gms.maps.OnMapReadyCallback;
     import com.google.android.gms.maps.SupportMapFragment;
-    import com.google.android.gms.maps.model.BitmapDescriptorFactory;
     import com.google.android.gms.maps.model.LatLng;
     import com.google.android.gms.maps.model.Marker;
     import com.google.android.gms.maps.model.MarkerOptions;
@@ -132,9 +124,7 @@
             );
 
 
-            findViewById(R.id.btnBuscarPuntosComprador).setOnClickListener(
-                    (v) -> {
-
+            findViewById(R.id.btnBuscarPuntosComprador).setOnClickListener((v) -> {
                 try {
                     // Verificar si autocompleteFragment es null
                     if (autocompleteFragment == null) {
@@ -170,67 +160,45 @@
                     // Obtener el texto actual en el campo de autocompletado
                     direccionActual = editText.getText().toString();
 
-                    // Obtener el ID del usuario desde SharedPreferences
-                    int idUsuario;
-                    try {
-                        idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
-                    } catch (Exception e) {
-                        Toast.makeText(this, "Error al obtener el ID del usuario", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    // Obtener la latitud y longitud desde la dirección ingresada
+                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocationName(direccionActual, 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        double latitud = addresses.get(0).getLatitude();
+                        double longitud = addresses.get(0).getLongitude();
 
-                    // Verificar si la dirección no está vacía y el ID del usuario es válido
-                    if (!direccionActual.isEmpty() && idUsuario != -1) {
-                        // Verificar si ya hay un punto de venta creado para este usuario
-                        String estadoPuntoVenta;
+                        // Obtener el ID del usuario desde SharedPreferences
+                        int idUsuario;
                         try {
-                            estadoPuntoVenta = dbHelperInstance.obtenerEstadoPuntoVenta(idUsuario);
+                            idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
                         } catch (Exception e) {
-                            Toast.makeText(this, "Error al verificar el estado del punto de venta", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Error al obtener el ID del usuario", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        if (estadoPuntoVenta != null && estadoPuntoVenta.equals("true")) {
-                            // Si ya hay un punto de venta existente en estado "Activo", mostrar una ventana emergente para confirmar el reemplazo
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("Punto de venta existente");
-                            builder.setMessage("El punto de venta actual está en estado: Activo. ¿Desea reemplazarlo?");
-
-                            final Context context = this;
-                            builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(context, CalendarioCampesino.class);
-                                    intent.putExtra("direccion", direccionActual);
-                                    context.startActivity(intent);
-                                }
-                            });
-                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(context, MenuGranjeroActivity.class);
-                                    context.startActivity(intent);
-                                }
-                            });
-                            builder.show();
-                        } else if (estadoPuntoVenta != null && estadoPuntoVenta.equals("Finalizado")) {
-                            // Si el estado del punto de venta existente es "Finalizado", mostrar un mensaje indicando que ya ha sido finalizado
-                            Toast.makeText(this, "El punto de venta actual está en estado: Finalizado.", Toast.LENGTH_SHORT).show();
-                        } else {
+                        // Verificar si la dirección no está vacía y el ID del usuario es válido
+                        if (!direccionActual.isEmpty() && idUsuario != -1) {
                             // Si no hay ningún punto de venta existente o el estado no es "Activo", guardar la nueva dirección
                             Toast.makeText(this, "Dirección guardada correctamente", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(this, CalendarioCampesino.class);
-                            Log.d("", "Direccion: " + direccionActual);
                             intent.putExtra("direccion", direccionActual);
+                            intent.putExtra("latitud", latitud);
+                            intent.putExtra("longitud", longitud);
+                            Log.d("latitud", String.valueOf(latitud));
+                            Log.d("longitud", String.valueOf(longitud));
+                            Log.d("direccion", direccionActual);
                             startActivity(intent);
+                        } else {
+                            Toast.makeText(this, "Por favor, ingresa una dirección válida", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(this, "Por favor, ingresa una dirección", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "No se encontraron coordenadas para la dirección ingresada", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+
         }
 
             private void updateManualLocationField(String address) {

@@ -14,7 +14,7 @@
         android:layout_marginTop="92dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
-        android:text="@string/ElementosVaciosG"
+        android:text="@string/ElementosVaciosC"
         android:textColor="#545f71"
         android:textSize="32sp"
         android:textStyle="bold"
