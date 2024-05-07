@@ -1,5 +1,6 @@
 package com.example.granjapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         edtCorreo = findViewById(R.id.correoCrearcuenta);
         edtContrasena = findViewById(R.id.contrasenaCrearCuenta);
         edtConfirmarContrasena = findViewById(R.id.confirmarcontrasenaCrearCuenta);
-        btnConfirmar = findViewById(R.id.btnConfirmar);
+        btnConfirmar = findViewById(R.id.btnConfirmarComprador);
 
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,10 +72,14 @@ public class MainActivity extends AppCompatActivity {
 
                 if (resultado != -1) {
                     Toast.makeText(MainActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, IniciodeAppActivity.class);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
                 }
             }
+
+
         });
     }
 

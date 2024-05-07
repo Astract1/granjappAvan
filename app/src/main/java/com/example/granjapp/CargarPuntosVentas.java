@@ -103,6 +103,13 @@ public class CargarPuntosVentas extends AppCompatActivity implements OnMapReadyC
             recyclerView.setAdapter(adapter);
         }
 
+        findViewById(R.id.botonRegresarCargarPuntosVentas).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
     }
 
