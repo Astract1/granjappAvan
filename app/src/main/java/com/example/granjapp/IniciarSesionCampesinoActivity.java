@@ -63,10 +63,15 @@ public class IniciarSesionCampesinoActivity extends AppCompatActivity {
         String correo = editTextCorreoCampesino.getText().toString().trim();
         String contraseña = editTextContraseñaCampesino.getText().toString().trim();
 
+
+
+
         // Validar credenciales con la base de datos
         dbHelper dbHelper = new dbHelper(this);
         boolean credencialesValidas = dbHelper.validarCredencialesCampesino(correo, contraseña);
 
+
+        Log.d("DEBUG", "Credenciales válidas: " + credencialesValidas);
         if (credencialesValidas) {
             // Obtener el ID del usuario basado en su correo electrónico
             int idUsuario = dbHelper.obtenerIdUsuarioPorCorreo(correo);
@@ -83,10 +88,12 @@ public class IniciarSesionCampesinoActivity extends AppCompatActivity {
                 Intent intent = new Intent(IniciarSesionCampesinoActivity.this, MenuGranjeroActivity.class);
                 startActivity(intent);
                 Toast.makeText(this, "Inicio de Sesión Correcto", Toast.LENGTH_SHORT).show();
-            } else {
-                // Mostrar mensaje de error si las credenciales son inválidas
-                Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
             }
+        }
+        else {
+            // Mostrar mensaje de error si las credenciales son inválidas
+            Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+
         }
     }
 }
