@@ -40,12 +40,12 @@
         android:id="@+id/mapaGranjero"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="292dp"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="296dp"
+        android:onClick="abrirMapaGranjero"
         android:src="@mipmap/mapa1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="abrirMapaGranjero"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textoProveedorGranjero"
@@ -93,7 +93,8 @@
         android:layout_height="65dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="420dp"
-        android:src="@mipmap/chat"
+        android:src="@mipmap/paquete"
+        app:tint="@color/VerdeApp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

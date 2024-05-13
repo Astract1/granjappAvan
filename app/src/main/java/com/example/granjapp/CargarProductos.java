@@ -99,6 +99,12 @@ public class CargarProductos extends AppCompatActivity {
                 abrirGaleria();
             }
         });
+
+
+        findViewById(R.id.botonRegresarCargarProducto).setOnClickListener( (v) -> {
+            Intent intent = new Intent(this, MenuGranjeroActivity.class);
+            startActivity(intent);
+        });
     }
 
     private boolean validarCampos() {
