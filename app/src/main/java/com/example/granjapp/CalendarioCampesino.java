@@ -12,12 +12,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -73,12 +71,7 @@ public class CalendarioCampesino extends AppCompatActivity {
         calendarView.setMaxDate(maxDateCalendar.getTimeInMillis());
 
         // Manejar el evento de selección de fecha
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                selectedCalendar.set(year, month, dayOfMonth);
-            }
-        });
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> selectedCalendar.set(year, month, dayOfMonth));
 
         findViewById(R.id.btnConfirmardiayhora).setOnClickListener(v -> {
             mostrarFechaYHora();
@@ -176,23 +169,20 @@ public class CalendarioCampesino extends AppCompatActivity {
         int hora = c.get(Calendar.HOUR_OF_DAY);
         int minuto = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(CalendarioCampesino.this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                // Obtener el indicador AM o PM
-                String amPm;
-                if (hourOfDay < 12) {
-                    amPm = "AM";
-                } else {
-                    amPm = "PM";
-                    // Convertir la hora de formato de 24 horas a formato de 12 horas
-                    if (hourOfDay > 12) {
-                        hourOfDay -= 12;
-                    }
+        TimePickerDialog timePickerDialog = new TimePickerDialog(CalendarioCampesino.this, (view1, hourOfDay, minute) -> {
+            // Obtener el indicador AM o PM
+            String amPm;
+            if (hourOfDay < 12) {
+                amPm = "AM";
+            } else {
+                amPm = "PM";
+                // Convertir la hora de formato de 24 horas a formato de 12 horas
+                if (hourOfDay > 12) {
+                    hourOfDay -= 12;
                 }
-                // Actualizar el TextView con la hora y el indicador AM/PM
-                HorarioEntrada.setText(String.format(Locale.getDefault(), "%02d:%02d %s", hourOfDay, minute, amPm));
             }
+            // Actualizar el TextView con la hora y el indicador AM/PM
+            HorarioEntrada.setText(String.format(Locale.getDefault(), "%02d:%02d %s", hourOfDay, minute, amPm));
         }, hora, minuto, false);
         timePickerDialog.show();
     }

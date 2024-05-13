@@ -48,4 +48,10 @@
             public static final String COLUM_LAITUD = "latitud";
             public static final String COLUM_LONGITUD = "longitud";
         }
+
+        public static class SobreMiEntry implements BaseColumns {
+            public static final String TABLE_NAME_SOBREMI = "sobremi";
+            public static final String COLUMN_ID_Granejero = "id_usuario";
+            public static final String COLUMN_DESCRIPCION = "descripcion";
+        }
     }

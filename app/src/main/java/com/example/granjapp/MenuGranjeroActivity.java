@@ -26,6 +26,14 @@ public class MenuGranjeroActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
         );
+
+        findViewById(R.id.PerfilGranjeroC).setOnClickListener(
+                (v) -> {
+                    Intent intent = new Intent(this, PerfilCampesinoActivity.class);
+                    intent.putExtra("ID_USUARIO", idUsuario);
+                    startActivity(intent);
+                }
+        );
     }
 
     public void abrirMapaGranjero(View view) {

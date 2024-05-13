@@ -69,10 +69,18 @@ public class dbHelper extends SQLiteOpenHelper {
 
                 ");";
 
+        final String SobreMi_TABLE = "CREATE TABLE " +
+                UsuariosContract.SobreMiEntry.TABLE_NAME_SOBREMI + " (" +
+                UsuariosContract.SobreMiEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                UsuariosContract.SobreMiEntry.COLUMN_ID_Granejero + " INTEGER NOT NULL," +
+                UsuariosContract.SobreMiEntry.COLUMN_DESCRIPCION + " TEXT NOT NULL" +
+                ");";
+
         db.execSQL(SQL_CREATE_USUARIOS_TABLE);
         db.execSQL(SQL_CREATE_CAMPESINOS_TABLE);
         db.execSQL(SQL_CREATE_SOCIOS_TABLE);
         db.execSQL(RegistrarPuntoVenta_TABLE);
+        db.execSQL(SobreMi_TABLE);
     }
 
     @Override
@@ -184,6 +192,24 @@ public class dbHelper extends SQLiteOpenHelper {
         return existeCorreo;
     }
 
+    public boolean existeCorreoGra(String correo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS,
+                null,
+                UsuariosContract.CampesinoEntry.COLUMN_CORREO + " = ?",
+                new String[]{correo},
+                null,
+                null,
+                null,
+                null
+        );
+        boolean existeCorreo = cursor.getCount() > 0;
+        cursor.close();
+        return existeCorreo;
+    }
+
+
     public long insertarEntrada(int idUsuario, String direccion, String horaEntrada, String horaSalida, String dia, String estado, double latitud, double longitud) {
         // Verificar los valores de entrada
         if (idUsuario < 0 || direccion.isEmpty() || horaEntrada.isEmpty() || horaSalida.isEmpty() || dia.isEmpty() || estado.isEmpty()) {
@@ -271,21 +297,6 @@ public class dbHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean actualizarEntradaExistente(int idTabla, String fecha, String horaEntrada, String horaSalida, String direccion) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_ENTRADA, horaEntrada);
-        values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_SALIDA, horaSalida);
-        values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA, fecha);
-        values.put(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIRECCION, direccion);
-        int rowsAffected = db.update(
-                UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES,
-                values,
-                UsuariosContract.RegistrarPuntoVentaEntry._ID + " = ?",
-                new String[]{String.valueOf(idTabla)}
-        );
-        return rowsAffected > 0;
-    }
 
 
     public boolean actualizarEstadoEntrada(int idUsuario, long idTabla, String nuevoEstado) {
@@ -512,6 +523,102 @@ public class dbHelper extends SQLiteOpenHelper {
 
         return puntosVenta;
     }
+
+
+    public Campesino obtenerDatosCampesino(int idUsuario) {
+        SQLiteDatabase db = null;
+        Campesino campesino = null;
+
+        try {
+            db = this.getReadableDatabase();
+            String query = "SELECT " +
+                    UsuariosContract.CampesinoEntry.COLUMN_NOMBRE + ", " +
+                    UsuariosContract.CampesinoEntry.COLUMN_APELLIDO + ", " +
+                    UsuariosContract.CampesinoEntry.COLUMN_CORREO + ", " +
+                    UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA +
+                    " FROM " + UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS +
+                    " WHERE " + UsuariosContract.CampesinoEntry._ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idUsuario)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                String nombre = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_NOMBRE));
+                String apellido = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_APELLIDO));
+                String correo = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_CORREO));
+                String nombreGranja = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA));
+
+                // Crear un objeto Campesino con los datos obtenidos
+                campesino = new Campesino(nombre, apellido, correo, nombreGranja);
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            Log.e("ERROR", "Error al obtener datos del campesino: " + e.getMessage());
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+        return campesino;
+    }
+
+
+    public void guardarInformacionSobreMi(int idUsuario, String descripcion) {
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(UsuariosContract.SobreMiEntry.COLUMN_DESCRIPCION, descripcion);
+
+            int rowsAffected = db.update(
+                    UsuariosContract.SobreMiEntry.TABLE_NAME_SOBREMI,
+                    values,
+                    UsuariosContract.SobreMiEntry.COLUMN_ID_Granejero + " = ?",
+                    new String[]{String.valueOf(idUsuario)}
+            );
+
+            // Si no hay filas afectadas (no se encontró una entrada existente), inserta una nueva entrada
+            if (rowsAffected == 0) {
+                values.put(UsuariosContract.SobreMiEntry.COLUMN_ID_Granejero, idUsuario);
+                db.insert(UsuariosContract.SobreMiEntry.TABLE_NAME_SOBREMI, null, values);
+            }
+        } catch (SQLiteException e) {
+            Log.e("ERROR", "Error al guardar o actualizar información sobre mí: " + e.getMessage());
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+
+    public String ObtenerInformacionSobreMi(int idUsuario) {
+        SQLiteDatabase db = null;
+        String descripcion = null;
+
+        try {
+            db = this.getReadableDatabase();
+            String query = "SELECT " + UsuariosContract.SobreMiEntry.COLUMN_DESCRIPCION +
+                    " FROM " + UsuariosContract.SobreMiEntry.TABLE_NAME_SOBREMI +
+                    " WHERE " + UsuariosContract.SobreMiEntry.COLUMN_ID_Granejero + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idUsuario)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                descripcion = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.SobreMiEntry.COLUMN_DESCRIPCION));
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            Log.e("ERROR", "Error al obtener información sobre mí: " + e.getMessage());
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+        return descripcion;
+    }
+
+
+
 
 
 

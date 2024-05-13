@@ -159,10 +159,10 @@
         app:layout_constraintTop_toTopOf="@id/divisor" />
 
     <ImageView
-        android:id="@+id/PerfilGranjero"
+        android:id="@+id/PerfilGranjeroC"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:contentDescription="Perfil"
+        android:contentDescription="@string/perfil"
         android:layout_marginStart="344dp"
         android:layout_marginTop="16dp"
         android:src="@mipmap/perfil"

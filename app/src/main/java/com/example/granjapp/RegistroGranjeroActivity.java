@@ -67,7 +67,7 @@ public class RegistroGranjeroActivity extends AppCompatActivity {
         }
 
 
-        if (dbHelper.existeCorreo(correo)) {
+        if (dbHelper.existeCorreoGra(correo)) {
             Toast.makeText(this, "El correo electrónico ya está registrado en otra cuenta", Toast.LENGTH_SHORT).show();
             return;
         }
