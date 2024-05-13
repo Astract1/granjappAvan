@@ -60,7 +60,7 @@ public class IniciarSesionCampesinoActivity extends AppCompatActivity {
 
     private void iniciarSesionCampesino() {
         // Obtener los valores de correo y contraseña ingresados por el usuario
-        String correo = editTextCorreoCampesino.getText().toString().trim();
+        String correo = editTextCorreoCampesino.getText().toString().trim().toLowerCase();
         String contraseña = editTextContraseñaCampesino.getText().toString().trim();
 
 

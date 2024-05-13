@@ -52,6 +52,12 @@ public class PerfilCampesinoActivity extends AppCompatActivity {
                     GuardarInformacionSobreMi();
                 }
         );
+
+        findViewById(R.id.botonRegresarPerfilCampesino).setOnClickListener(
+                (v) -> {
+                    finish();
+                }
+        );
     }
 
     private void cargarPerfilCampesino() {

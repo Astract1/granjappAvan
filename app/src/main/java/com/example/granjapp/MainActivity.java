@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String nombre = edtNombre.getText().toString().trim();
                 String apellido = edtApellido.getText().toString().trim();
-                String correo = edtCorreo.getText().toString().trim();
+                String correo = edtCorreo.getText().toString().trim().toLowerCase();
                 String contrasena = edtContrasena.getText().toString();
                 String confirmarContrasena = edtConfirmarContrasena.getText().toString();
 

@@ -54,4 +54,15 @@
             public static final String COLUMN_ID_Granejero = "id_usuario";
             public static final String COLUMN_DESCRIPCION = "descripcion";
         }
+
+        public static class subirProductos implements BaseColumns {
+            public static final String TABLE_NAME_PRODUCTOS = "productos";
+            public static final String COLUMN_ID_USUARIO = "id_granjero";
+            public static final String COLUMN_NOMBRE_PRODUCTO = "nombre_producto";
+            public static final String COLUMN_PRECIO = "precio";
+            public static final String COLUMN_DESCRIPCION = "descripcion";
+            public static final String COLUMN_CANTIDAD = "cantidad";
+            public static final String COLUMN_IMAGEN = "imagen";
+        }
+
     }

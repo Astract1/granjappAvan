@@ -94,6 +94,15 @@
 
     <string name="direccionPunto">Dirección del punto de venta</string>
     <string name="sobremi">Sobre Mi</string>
-
+    <string name="cargarproductostxt">Cargar Productos</string>
     <string name="perfil">Perfil</string>
+    <string name="agregarProducto">Agregar Producto</string>
+    <string name="nombreProducto">Nombre del Producto</string>
+    <string name="precioProducto">Precio del Producto</string>
+    <string name="cantidadProducto">Cantidad del Producto</string>
+    <string name="descripcionProducto">Descripción del Producto</string>
+    <string name="btn_cargar_producto">Cargar Producto</string>
+    <string name="btn_tomar_foto">Tomar Foto del Producto</string>
+    <string name="btn_subirproducto">Subir Imagen del Producto</string>
+    <string name= "imagenProducto">Imagen del producto</string>
 </resources>

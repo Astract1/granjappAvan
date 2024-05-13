@@ -76,11 +76,24 @@ public class dbHelper extends SQLiteOpenHelper {
                 UsuariosContract.SobreMiEntry.COLUMN_DESCRIPCION + " TEXT NOT NULL" +
                 ");";
 
+
+        final String subirProductos_TABLE = "CREATE TABLE " +
+                UsuariosContract.subirProductos.TABLE_NAME_PRODUCTOS + " (" +
+                UsuariosContract.subirProductos._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                UsuariosContract.subirProductos.COLUMN_ID_USUARIO + " INTEGER NOT NULL," +
+                UsuariosContract.subirProductos.COLUMN_NOMBRE_PRODUCTO + " TEXT NOT NULL," +
+                UsuariosContract.subirProductos.COLUMN_CANTIDAD + " INTEGER NOT NULL," +
+                UsuariosContract.subirProductos.COLUMN_PRECIO + " REAL NOT NULL," +
+                UsuariosContract.subirProductos.COLUMN_DESCRIPCION + " TEXT NOT NULL," +
+                UsuariosContract.subirProductos.COLUMN_IMAGEN + " BLOB NOT NULL" +
+                ");";
+
         db.execSQL(SQL_CREATE_USUARIOS_TABLE);
         db.execSQL(SQL_CREATE_CAMPESINOS_TABLE);
         db.execSQL(SQL_CREATE_SOCIOS_TABLE);
         db.execSQL(RegistrarPuntoVenta_TABLE);
         db.execSQL(SobreMi_TABLE);
+        db.execSQL(subirProductos_TABLE);
     }
 
     @Override
@@ -297,8 +310,6 @@ public class dbHelper extends SQLiteOpenHelper {
     }
 
 
-
-
     public boolean actualizarEstadoEntrada(int idUsuario, long idTabla, String nuevoEstado) {
         SQLiteDatabase db = null;
         int rowsAffected = 0;
@@ -332,8 +343,6 @@ public class dbHelper extends SQLiteOpenHelper {
         }
         return rowsAffected > 0;
     }
-
-
 
 
     public List<PuntoVenta> obtenerTodosLosPuntosVenta(int idUsuario, boolean ordenarPorIdAscendente) {
@@ -617,9 +626,18 @@ public class dbHelper extends SQLiteOpenHelper {
         return descripcion;
     }
 
-
-
-
+    public void agregarProducto(int idUsuario, String nombreProducto, double precio, int cantidad, String descripcion, byte[] imagen) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(UsuariosContract.subirProductos.COLUMN_ID_USUARIO, idUsuario);
+        values.put(UsuariosContract.subirProductos.COLUMN_NOMBRE_PRODUCTO, nombreProducto);
+        values.put(UsuariosContract.subirProductos.COLUMN_CANTIDAD, cantidad);
+        values.put(UsuariosContract.subirProductos.COLUMN_PRECIO, precio); // Aquí el precio es double
+        values.put(UsuariosContract.subirProductos.COLUMN_DESCRIPCION, descripcion);
+        values.put(UsuariosContract.subirProductos.COLUMN_IMAGEN, imagen);
+        db.insert(UsuariosContract.subirProductos.TABLE_NAME_PRODUCTOS, null, values);
+        db.close();
+    }
 
 
 

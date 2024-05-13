@@ -41,7 +41,7 @@ public class RegistroGranjeroActivity extends AppCompatActivity {
     private void registrarCampesino() {
         String nombre = nombreEditText.getText().toString().trim();
         String apellido = apellidoEditText.getText().toString().trim();
-        String correo = correoEditText.getText().toString().trim();
+        String correo = correoEditText.getText().toString().trim().toLowerCase();
         String contrasena = contrasenaEditText.getText().toString();
         String confirmarContrasena = confirmarContrasenaEditText.getText().toString();
         String nombreGranja = nombreGranjaEditText.getText().toString().trim();
@@ -76,6 +76,7 @@ public class RegistroGranjeroActivity extends AppCompatActivity {
         if (resultado != -1) {
             Toast.makeText(this, "Campesino registrado correctamente", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, IniciodeAppActivity.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Error al registrar el campesino", Toast.LENGTH_SHORT).show();
         }

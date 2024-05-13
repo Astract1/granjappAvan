@@ -36,7 +36,7 @@ public class IniciarSesionCompradorActivity extends AppCompatActivity {
 
     private void iniciarSesionComprador() {
         // Obtener los valores de correo y contraseña ingresados por el usuario
-        String correo = editTextCorreoComprador.getText().toString().trim();
+        String correo = editTextCorreoComprador.getText().toString().trim().toLowerCase();
         String contraseña = editTextContraseñaComprador.getText().toString().trim();
 
         // Validar credenciales con la base de datos

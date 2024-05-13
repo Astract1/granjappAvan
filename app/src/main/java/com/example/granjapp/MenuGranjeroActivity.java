@@ -34,6 +34,14 @@ public class MenuGranjeroActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
         );
+
+        findViewById(R.id.proveedorGranjero).setOnClickListener(
+                (v) -> {
+                    Intent intent = new Intent(this, CargarProductos.class);
+                    intent.putExtra("ID_USUARIO", idUsuario);
+                    startActivity(intent);
+                }
+        );
     }
 
     public void abrirMapaGranjero(View view) {
