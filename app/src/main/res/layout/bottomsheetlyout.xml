@@ -76,8 +76,17 @@
                 android:textSize="20sp" />
 
 
+            <Button
+                android:id="@+id/btnVerPerfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver Perfil"
+                android:layout_below="@+id/DistanciaPuntoVentaC"
+                android:layout_centerHorizontal="true" />
+
 
         </LinearLayout>
+
 
 
     </RelativeLayout>

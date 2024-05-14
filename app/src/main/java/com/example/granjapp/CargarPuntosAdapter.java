@@ -1,6 +1,7 @@
 package com.example.granjapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,8 @@ public class CargarPuntosAdapter extends  RecyclerView.Adapter<CargarPuntosAdapt
         ImageView img;
         TextView direccion, horaServicio, nombre, distancia;
 
+        View btnVerPerfil;
+
         ViewHolder(View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.ImagenPuntoVenta);
@@ -60,6 +63,10 @@ public class CargarPuntosAdapter extends  RecyclerView.Adapter<CargarPuntosAdapt
             horaServicio = itemView.findViewById(R.id.HorarioPuntoVentaC);
             nombre = itemView.findViewById(R.id.NombrePuntoVentaC);
             distancia = itemView.findViewById(R.id.DistanciaPuntoVentaC);
+            btnVerPerfil = itemView.findViewById(R.id.btnVerPerfil);
+
+
+
         }
 
         void bindData(PuntoVenta puntoVenta) {
@@ -92,6 +99,12 @@ public class CargarPuntosAdapter extends  RecyclerView.Adapter<CargarPuntosAdapt
                     double longitud = puntoVenta.getLongitud();
                     ((CargarPuntosVentas) context).moverCamaraMapa(latitud, longitud);
                 }
+            });
+
+            btnVerPerfil.setOnClickListener(v -> {
+                Intent intent = new Intent(context, VerPerfilCampesino.class);
+                intent.putExtra("id", puntoVenta.getIdUsuario());
+                context.startActivity(intent);
             });
 
         }

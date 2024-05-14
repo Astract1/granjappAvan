@@ -144,24 +144,40 @@ public class CargarProductos extends AppCompatActivity {
     }
 
     private void guardarProductoEnBaseDeDatos(int idUsuario, String nombreProducto, double precioProducto, int cantidadProducto, String descripcionProducto) {
-        // Convertir la imagen a un arreglo de bytes
-        byte[] imagenBytes = convertirImagenABytes(imageUri);
-        // Llamar al método de la base de datos para guardar el producto
-        dbHelper db = new dbHelper(this);
-        db.agregarProducto(idUsuario, nombreProducto, precioProducto, cantidadProducto, descripcionProducto, imagenBytes);
-        mostrarMensaje("Producto guardado correctamente");
+        // Guardar la imagen en el almacenamiento del dispositivo y obtener la ruta del archivo
+        String rutaImagen = guardarImagenEnAlmacenamiento(imageUri);
+
+        if (rutaImagen != null) {
+            // Llamar al método de la base de datos para guardar el producto con la ruta de la imagen
+            dbHelper db = new dbHelper(this);
+            db.agregarProducto(idUsuario, nombreProducto, precioProducto, cantidadProducto, descripcionProducto, rutaImagen);
+            mostrarMensaje("Producto guardado correctamente");
+        } else {
+            mostrarMensaje("No se pudo guardar la imagen");
+        }
     }
 
-    private byte[] convertirImagenABytes(Uri imageUri) {
+    private String guardarImagenEnAlmacenamiento(Uri imageUri) {
         try {
+            // Abrir un InputStream desde la URI de la imagen seleccionada
             InputStream inputStream = getContentResolver().openInputStream(imageUri);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+            // Crear un archivo temporal para guardar la imagen en el almacenamiento externo
+            File outputDir = getApplicationContext().getCacheDir();
+            File outputFile = File.createTempFile("tmp", ".jpg", outputDir);
+
+            // Copiar el contenido del InputStream al archivo de salida
+            FileOutputStream outputStream = new FileOutputStream(outputFile);
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
-                byteArrayOutputStream.write(buffer, 0, bytesRead);
+                outputStream.write(buffer, 0, bytesRead);
             }
-            return byteArrayOutputStream.toByteArray();
+            outputStream.close();
+            inputStream.close();
+
+            // Devolver la ruta del archivo de salida
+            return outputFile.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
             return null;

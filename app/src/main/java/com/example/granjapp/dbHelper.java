@@ -85,7 +85,7 @@ public class dbHelper extends SQLiteOpenHelper {
                 UsuariosContract.subirProductos.COLUMN_CANTIDAD + " INTEGER NOT NULL," +
                 UsuariosContract.subirProductos.COLUMN_PRECIO + " REAL NOT NULL," +
                 UsuariosContract.subirProductos.COLUMN_DESCRIPCION + " TEXT NOT NULL," +
-                UsuariosContract.subirProductos.COLUMN_IMAGEN + " BLOB NOT NULL" +
+                UsuariosContract.subirProductos.COLUMN_IMAGEN + " TEXT NOT NULL" +
                 ");";
 
         db.execSQL(SQL_CREATE_USUARIOS_TABLE);
@@ -356,7 +356,8 @@ public class dbHelper extends SQLiteOpenHelper {
                     UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_ENTRADA,
                     UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_SALIDA,
                     UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA,
-                    UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO
+                    UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO,
+                    UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ID_USUARIO
             };
 
             String selection = UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ID_USUARIO + " = ?";
@@ -388,8 +389,9 @@ public class dbHelper extends SQLiteOpenHelper {
                         String horaSalida = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_SALIDA));
                         String dia = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA));
                         String estado = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO));
+                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ID_USUARIO));
 
-                        PuntoVenta puntoVenta = new PuntoVenta(puntoVentaId, direccion, horaEntrada, horaSalida, dia, estado, "null", 0, 0);
+                        PuntoVenta puntoVenta = new PuntoVenta(puntoVentaId, direccion, horaEntrada, horaSalida, dia, estado, "null", 0, 0, id);
                         puntosVenta.add(puntoVenta);
                     } while (cursor.moveToNext());
                 }
@@ -483,6 +485,7 @@ public class dbHelper extends SQLiteOpenHelper {
                     UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_HORA_SALIDA,
                     UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA,
                     UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO,
+                    UsuariosContract.RegistrarPuntoVentaEntry.TABLE_NAME_DIRECCIONES + "." + UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ID_USUARIO,
                     UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS + "." + UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA
             };
 
@@ -516,8 +519,9 @@ public class dbHelper extends SQLiteOpenHelper {
                         String dia = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_DIA));
                         String estado = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO));
                         String nombreGranja = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA));
+                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ID_USUARIO));
 
-                        PuntoVenta puntoVenta = new PuntoVenta(puntoVentaId, direccion, horaEntrada, horaSalida, dia, estado, nombreGranja, latitud, longitud);
+                        PuntoVenta puntoVenta = new PuntoVenta(puntoVentaId, direccion, horaEntrada, horaSalida, dia, estado, nombreGranja, latitud, longitud, id);
                         puntosVenta.add(puntoVenta);
                     } while (cursor.moveToNext());
                 }
@@ -540,25 +544,41 @@ public class dbHelper extends SQLiteOpenHelper {
 
         try {
             db = this.getReadableDatabase();
-            String query = "SELECT " +
+
+            // Consulta principal para obtener los datos del campesino
+            String queryCampesino = "SELECT " +
                     UsuariosContract.CampesinoEntry.COLUMN_NOMBRE + ", " +
                     UsuariosContract.CampesinoEntry.COLUMN_APELLIDO + ", " +
                     UsuariosContract.CampesinoEntry.COLUMN_CORREO + ", " +
                     UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA +
                     " FROM " + UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS +
                     " WHERE " + UsuariosContract.CampesinoEntry._ID + " = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idUsuario)});
+            Cursor cursorCampesino = db.rawQuery(queryCampesino, new String[]{String.valueOf(idUsuario)});
 
-            if (cursor != null && cursor.moveToFirst()) {
-                String nombre = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_NOMBRE));
-                String apellido = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_APELLIDO));
-                String correo = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_CORREO));
-                String nombreGranja = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA));
+            if (cursorCampesino != null && cursorCampesino.moveToFirst()) {
+                String nombre = cursorCampesino.getString(cursorCampesino.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_NOMBRE));
+                String apellido = cursorCampesino.getString(cursorCampesino.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_APELLIDO));
+                String correo = cursorCampesino.getString(cursorCampesino.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_CORREO));
+                String nombreGranja = cursorCampesino.getString(cursorCampesino.getColumnIndexOrThrow(UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA));
+
+                // Segunda consulta para obtener la descripción "Sobre Mi"
+                String querySobreMi = "SELECT " + UsuariosContract.SobreMiEntry.COLUMN_DESCRIPCION +
+                        " FROM " + UsuariosContract.SobreMiEntry.TABLE_NAME_SOBREMI +
+                        " WHERE " + UsuariosContract.SobreMiEntry.COLUMN_ID_Granejero + " = ?";
+                Cursor cursorSobreMi = db.rawQuery(querySobreMi, new String[]{String.valueOf(idUsuario)});
+
+                String descripcion = null;
+                if (cursorSobreMi != null && cursorSobreMi.moveToFirst()) {
+                    descripcion = cursorSobreMi.getString(cursorSobreMi.getColumnIndexOrThrow(UsuariosContract.SobreMiEntry.COLUMN_DESCRIPCION));
+                    cursorSobreMi.close();
+                }
 
                 // Crear un objeto Campesino con los datos obtenidos
-                campesino = new Campesino(nombre, apellido, correo, nombreGranja);
+                campesino = new Campesino(nombre, apellido, correo, nombreGranja, descripcion);
             }
-            cursor.close();
+            if (cursorCampesino != null) {
+                cursorCampesino.close();
+            }
         } catch (SQLiteException e) {
             Log.e("ERROR", "Error al obtener datos del campesino: " + e.getMessage());
         } finally {
@@ -568,6 +588,7 @@ public class dbHelper extends SQLiteOpenHelper {
         }
         return campesino;
     }
+
 
 
     public void guardarInformacionSobreMi(int idUsuario, String descripcion) {
@@ -626,7 +647,7 @@ public class dbHelper extends SQLiteOpenHelper {
         return descripcion;
     }
 
-    public void agregarProducto(int idUsuario, String nombreProducto, double precio, int cantidad, String descripcion, byte[] imagen) {
+    public void agregarProducto(int idUsuario, String nombreProducto, double precio, int cantidad, String descripcion, String imagen) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(UsuariosContract.subirProductos.COLUMN_ID_USUARIO, idUsuario);
@@ -638,6 +659,47 @@ public class dbHelper extends SQLiteOpenHelper {
         db.insert(UsuariosContract.subirProductos.TABLE_NAME_PRODUCTOS, null, values);
         db.close();
     }
+
+    public List<String> obtenerImagenesProductos(int idUsuario) {
+        List<String> rutasImagenes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try {
+            String[] projection = {UsuariosContract.subirProductos.COLUMN_IMAGEN};
+            String selection = UsuariosContract.subirProductos.COLUMN_ID_USUARIO + " = ?";
+            String[] selectionArgs = {String.valueOf(idUsuario)};
+
+            Cursor cursor = db.query(
+                    UsuariosContract.subirProductos.TABLE_NAME_PRODUCTOS,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        String rutaImagen = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.subirProductos.COLUMN_IMAGEN));
+                        rutasImagenes.add(rutaImagen);
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("ERROR", "Error al obtener las imágenes de los productos: " + e.getMessage());
+            // Manejar el error según sea necesario
+        } finally {
+            db.close();
+        }
+
+        return rutasImagenes;
+    }
+
+
+
 
 
 

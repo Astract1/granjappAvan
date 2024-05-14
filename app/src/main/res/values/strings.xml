@@ -104,5 +104,7 @@
     <string name="btn_cargar_producto">Cargar Producto</string>
     <string name="btn_tomar_foto">Tomar Foto del Producto</string>
     <string name="btn_subirproducto">Subir Imagen del Producto</string>
-    <string name= "imagenProducto">Imagen del producto</string>
+    <string name="imagenProducto">Imagen del producto</string>
+
+    <string name="sobreMi_default">No ha proporcianado información</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.granjapp;
 
 public class PuntoVenta {
     private int id;
+    private int idUsuario;
     private String direccion;
     private String horaEntrada;
     private String horaSalida;
@@ -13,7 +14,7 @@ public class PuntoVenta {
     private double longitud;
 
 
-    public PuntoVenta(int id, String direccion, String horaEntrada, String horaSalida, String fecha, String estado, String nombre, double latitud, double longitud) {
+    public PuntoVenta(int id, String direccion, String horaEntrada, String horaSalida, String fecha, String estado, String nombre, double latitud, double longitud, int idUsuario) {
         this.id = id;
         this.direccion = direccion;
         this.horaEntrada = horaEntrada;
@@ -23,7 +24,7 @@ public class PuntoVenta {
         this.nombre = nombre;
         this.latitud = latitud;
         this.longitud = longitud;
-
+        this.idUsuario = idUsuario;
 
     }
 
@@ -99,6 +100,14 @@ public class PuntoVenta {
 
     public void setLongitud(double longitud) {
         this.longitud = longitud;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
 }
