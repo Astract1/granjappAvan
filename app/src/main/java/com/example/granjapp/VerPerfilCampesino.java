@@ -47,17 +47,16 @@ public class VerPerfilCampesino extends AppCompatActivity {
         nombreGranjaTextView = findViewById(R.id.NombreGranjaC);
         sobreMiEditText = findViewById(R.id.SobremiC);
 
-        // Obtener las rutas de las imágenes
         List<String> rutasImagenes = db.obtenerImagenesProductos(idUsuario);
+        List<String> descripciones = db.ObtenerDescripciones(idUsuario);
 
-// Crear una lista de CarouselItem utilizando las rutas de las imágenes
         List<CarouselItem> list = new ArrayList<>();
-        for (String rutaImagen : rutasImagenes) {
-            Log.d("VerPerfilCampesino", "Ruta de imagen: " + rutaImagen);
-            list.add(new CarouselItem(rutaImagen)); // Utiliza la ruta de la imagen para crear el CarouselItem
+        for (int i = 0; i < rutasImagenes.size(); i++) {
+            String rutaImagen = rutasImagenes.get(i);
+            String descripcion = descripciones.get(i);
+            list.add(new CarouselItem(rutaImagen, descripcion)); // Utiliza la ruta de la imagen y la descripción para crear el CarouselItem
         }
 
-// Configurar el ImageCarousel con la lista de CarouselItem
         ImageCarousel carousel = findViewById(R.id.carousel);
         carousel.registerLifecycle(getLifecycle());
         carousel.setData(list);

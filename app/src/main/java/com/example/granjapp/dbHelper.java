@@ -698,6 +698,44 @@ public class dbHelper extends SQLiteOpenHelper {
         return rutasImagenes;
     }
 
+    public List<String> ObtenerDescripciones(int idUsuario) {
+        List<String> descripciones = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try {
+            String[] projection = {UsuariosContract.subirProductos.COLUMN_DESCRIPCION};
+            String selection = UsuariosContract.subirProductos.COLUMN_ID_USUARIO + " = ?";
+            String[] selectionArgs = {String.valueOf(idUsuario)};
+
+            Cursor cursor = db.query(
+                    UsuariosContract.subirProductos.TABLE_NAME_PRODUCTOS,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        String descripcion = cursor.getString(cursor.getColumnIndexOrThrow(UsuariosContract.subirProductos.COLUMN_DESCRIPCION));
+                        descripciones.add(descripcion);
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("ERROR", "Error al obtener las descripciones de los productos: " + e.getMessage());
+            // Manejar el error según sea necesario
+        } finally {
+            db.close();
+        }
+
+        return descripciones;
+    }
+
 
 
 

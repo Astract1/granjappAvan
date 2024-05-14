@@ -66,7 +66,6 @@ public class CargarPuntosAdapter extends  RecyclerView.Adapter<CargarPuntosAdapt
             btnVerPerfil = itemView.findViewById(R.id.btnVerPerfil);
 
 
-
         }
 
         void bindData(PuntoVenta puntoVenta) {
@@ -94,12 +93,12 @@ public class CargarPuntosAdapter extends  RecyclerView.Adapter<CargarPuntosAdapt
                         }
                     }, 200); // Cambia este valor si deseas ajustar la duración del cambio de color
 
-                    // Tu código adicional aquí, como mover la cámara del mapa
                     double latitud = puntoVenta.getLatitud();
                     double longitud = puntoVenta.getLongitud();
                     ((CargarPuntosVentas) context).moverCamaraMapa(latitud, longitud);
                 }
             });
+
 
             btnVerPerfil.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VerPerfilCampesino.class);
@@ -108,6 +107,7 @@ public class CargarPuntosAdapter extends  RecyclerView.Adapter<CargarPuntosAdapt
             });
 
         }
+
 
 
 
