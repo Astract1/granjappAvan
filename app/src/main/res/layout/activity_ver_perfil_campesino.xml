@@ -111,6 +111,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:imageScaleType="centerCrop"
+        app:carouselType="BLOCK"
+        app:carouselGravity="CENTER"
+        app:autoWidthFixing="true"
+        app:autoPlay="true"
+        app:infiniteCarousel="true"
+        app:touchToPause="true"
+        app:showCaption="true"
+        app:captionMargin="3dp"
+        app:captionTextSize="20sp"
         app:layout_constraintVertical_bias="0.899">
 
     </org.imaginativeworld.whynotimagecarousel.ImageCarousel>

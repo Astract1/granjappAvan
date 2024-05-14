@@ -64,8 +64,9 @@
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
 
+
             if (!Places.isInitialized()) {
-                Places.initialize(getApplicationContext(), "APIKEY");
+                Places.initialize(getApplicationContext(), "API_KEY");
             }
 
             AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
