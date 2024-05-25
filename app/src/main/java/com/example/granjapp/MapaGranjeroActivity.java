@@ -134,7 +134,7 @@
                     }
 
                     // Crear una instancia de dbHelper
-                    dbHelper dbHelperInstance = new dbHelper(this);
+                    dbHelper dbHelperInstance = dbHelper.getInstance(this);
 
                     // Verificar si dbHelperInstance es null
                     if (dbHelperInstance == null) {

@@ -20,7 +20,7 @@ public class RegistroGranjeroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_granjero);
 
-        dbHelper = new dbHelper(this);
+        dbHelper dbHelperInstance = dbHelper.getInstance(this);
 
         nombreEditText = findViewById(R.id.nombreCrearCuentaCampesino);
         apellidoEditText = findViewById(R.id.apellidoCrearCuentaCampesino);

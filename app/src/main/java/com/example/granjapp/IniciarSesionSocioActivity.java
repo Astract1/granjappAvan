@@ -43,8 +43,8 @@ public class IniciarSesionSocioActivity extends AppCompatActivity {
         String contraseña = editTextContraseñaSocio.getText().toString().trim();
 
         // Validar credenciales con la base de datos
-        dbHelper dbHelper = new dbHelper(this);
-        boolean credencialesValidas = dbHelper.validarCredencialesSocio(correo, contraseña);
+        dbHelper dbHelperInstance = dbHelper.getInstance(this);
+        boolean credencialesValidas = dbHelperInstance.validarCredencialesSocio(correo, contraseña);
 
         if (credencialesValidas) {
             Toast.makeText(this, "Inicio de Sesion Correcto", Toast.LENGTH_SHORT).show();

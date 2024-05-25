@@ -18,7 +18,7 @@ public class RegistroSocioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_socio);
 
-        dbHelper = new dbHelper(this);
+        dbHelper dbHelperInstance = dbHelper.getInstance(this);
 
         nombreEditText = findViewById(R.id.nombreCrearCuentaSocio);
         apellidoEditText = findViewById(R.id.apellidoCrearCuentaSocio);

@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbHelper = new dbHelper(this);
+        dbHelper dbHelperInstance = dbHelper.getInstance(this);
+
 
         edtNombre = findViewById(R.id.nombreCrearCuenta);
         edtApellido = findViewById(R.id.apellidoCrearCuenta);

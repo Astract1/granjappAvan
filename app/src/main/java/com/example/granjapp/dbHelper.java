@@ -17,13 +17,26 @@ public class dbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "granjapp.db";
     private static final int DATABASE_VERSION = 1;
 
-    public dbHelper(Context context) {
+
+
+    // Variable estática para mantener la única instancia de dbHelper
+    private static dbHelper instance;
+
+    // Constructor privado para prevenir la creación de instancias directamente
+    private dbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    // Método estático para obtener la instancia de dbHelper
+    public static synchronized dbHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new dbHelper(context.getApplicationContext());
+        }
+        return instance;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         final String SQL_CREATE_USUARIOS_TABLE = "CREATE TABLE " +
                 UsuariosContract.UsuarioEntry.TABLE_NAME_USUARIOS + " (" +
                 UsuariosContract.UsuarioEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -41,9 +54,7 @@ public class dbHelper extends SQLiteOpenHelper {
                 UsuariosContract.CampesinoEntry.COLUMN_CORREO + " TEXT NOT NULL, " +
                 UsuariosContract.CampesinoEntry.COLUMN_CONTRASENA + " TEXT NOT NULL, " +
                 UsuariosContract.CampesinoEntry.COLUMN_NOMBRE_GRANJA + " TEXT NOT NULL" +
-
                 ");";
-
 
         final String SQL_CREATE_SOCIOS_TABLE = "CREATE TABLE " +
                 UsuariosContract.SocioEntry.TABLE_NAME_SOCIOS + " (" +
@@ -66,7 +77,6 @@ public class dbHelper extends SQLiteOpenHelper {
                 UsuariosContract.RegistrarPuntoVentaEntry.COLUMN_ESTADO + " TEXT DEFAULT 'FALSE'," +
                 UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LAITUD + " REAL NOT NULL ," +
                 UsuariosContract.RegistrarPuntoVentaEntry.COLUM_LONGITUD + " REAL NOT NULL" +
-
                 ");";
 
         final String SobreMi_TABLE = "CREATE TABLE " +
@@ -75,7 +85,6 @@ public class dbHelper extends SQLiteOpenHelper {
                 UsuariosContract.SobreMiEntry.COLUMN_ID_Granejero + " INTEGER NOT NULL," +
                 UsuariosContract.SobreMiEntry.COLUMN_DESCRIPCION + " TEXT NOT NULL" +
                 ");";
-
 
         final String subirProductos_TABLE = "CREATE TABLE " +
                 UsuariosContract.subirProductos.TABLE_NAME_PRODUCTOS + " (" +
@@ -95,6 +104,7 @@ public class dbHelper extends SQLiteOpenHelper {
         db.execSQL(SobreMi_TABLE);
         db.execSQL(subirProductos_TABLE);
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -139,26 +149,21 @@ public class dbHelper extends SQLiteOpenHelper {
     }
 
     public boolean validarCredencialesCampesino(String correo, String contraseña) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(
-                UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS,
-                null,
-                UsuariosContract.CampesinoEntry.COLUMN_CORREO + " = ? AND " +
-                        UsuariosContract.CampesinoEntry.COLUMN_CONTRASENA + " = ?",
-                new String[]{correo, contraseña},
-                null,
-                null,
-                null
-        );
-        boolean credencialesValidas = cursor.getCount() > 0;
-        cursor.close();
-        return credencialesValidas;
+        return validarCredenciales(UsuariosContract.CampesinoEntry.TABLE_NAME_CAMPESINOS, correo, contraseña);
     }
 
     public boolean validarCredencialesComprador(String correo, String contraseña) {
+        return validarCredenciales(UsuariosContract.UsuarioEntry.TABLE_NAME_USUARIOS, correo, contraseña);
+    }
+
+    public boolean validarCredencialesSocio(String correo, String contraseña) {
+        return validarCredenciales(UsuariosContract.SocioEntry.TABLE_NAME_SOCIOS, correo, contraseña);
+    }
+
+    private boolean validarCredenciales(String tableName, String correo, String contraseña) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
-                UsuariosContract.UsuarioEntry.TABLE_NAME_USUARIOS,
+                tableName,
                 null,
                 UsuariosContract.UsuarioEntry.COLUMN_CORREO + " = ? AND " +
                         UsuariosContract.UsuarioEntry.COLUMN_CONTRASENA + " = ?",
@@ -172,22 +177,6 @@ public class dbHelper extends SQLiteOpenHelper {
         return credencialesValidas;
     }
 
-    public boolean validarCredencialesSocio(String correo, String contraseña) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(
-                UsuariosContract.SocioEntry.TABLE_NAME_SOCIOS,
-                null,
-                UsuariosContract.SocioEntry.COLUMN_CORREO + " = ? AND " +
-                        UsuariosContract.SocioEntry.COLUMN_CONTRASENA + " = ?",
-                new String[]{correo, contraseña},
-                null,
-                null,
-                null
-        );
-        boolean credencialesValidas = cursor.getCount() > 0;
-        cursor.close();
-        return credencialesValidas;
-    }
 
     public boolean existeCorreo(String correo) {
         SQLiteDatabase db = this.getReadableDatabase();

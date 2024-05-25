@@ -102,7 +102,7 @@ public class CalendarioCampesino extends AppCompatActivity {
 
 
             if (entradaCalendar.before(salidaCalendar)) {
-                dbHelper dbHelperInstance = new dbHelper(CalendarioCampesino.this);
+                dbHelper dbHelperInstance = dbHelper.getInstance(CalendarioCampesino.this);
                 // Obtener el ID del usuario desde SharedPreferences
                 int idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
 
@@ -188,9 +188,9 @@ public class CalendarioCampesino extends AppCompatActivity {
     }
 
     private void guardarEntrada(String fecha, String horaEntrada, String horaSalida, String direccion, String estado, double latitud, double longitud) {
-        dbHelper dbHelperInstance = null;
+          dbHelper dbHelperInstance = null;
         try {
-            dbHelperInstance = new dbHelper(this);
+            dbHelperInstance = dbHelper.getInstance(CalendarioCampesino.this);
             int idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
             if (idUsuario == -1) {
                 Toast.makeText(this, "Error al obtener el ID del usuario", Toast.LENGTH_SHORT).show();

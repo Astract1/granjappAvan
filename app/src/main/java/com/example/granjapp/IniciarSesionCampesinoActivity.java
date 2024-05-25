@@ -67,14 +67,15 @@ public class IniciarSesionCampesinoActivity extends AppCompatActivity {
 
 
         // Validar credenciales con la base de datos
-        dbHelper dbHelper = new dbHelper(this);
-        boolean credencialesValidas = dbHelper.validarCredencialesCampesino(correo, contraseña);
+        dbHelper db = dbHelper.getInstance(this);
+
+        boolean credencialesValidas = db.validarCredencialesCampesino(correo, contraseña);
 
 
         Log.d("DEBUG", "Credenciales válidas: " + credencialesValidas);
         if (credencialesValidas) {
             // Obtener el ID del usuario basado en su correo electrónico
-            int idUsuario = dbHelper.obtenerIdUsuarioPorCorreo(correo);
+            int idUsuario = db.obtenerIdUsuarioPorCorreo(correo);
 
             // Si el ID es válido (diferente de -1), puedes usarlo para realizar otras operaciones
             if (idUsuario != -1) {

@@ -66,12 +66,12 @@ public class HistorialPuntosdeVenta extends AppCompatActivity {
                     // Verificar si todos los puntos de venta asociados al usuario están inactivos
                     if (!todosLosPuntosDeVentaEstanInactivos()) {
                         // Obtener el ID del punto de venta activo
-                        long idPuntoVentaActivo = dbHelper.obtenerIdPuntoVentaActivo(idUsuario);
+                        long idPuntoVentaActivo = dbHelperInstance.obtenerIdPuntoVentaActivo(idUsuario);
 
                         // Verificar si se encontró un punto de venta activo
                         if (idPuntoVentaActivo != -1) {
                             // Actualizar el estado del punto de venta a inactivo
-                            dbHelper.actualizarEstadoEntrada(idUsuario, idPuntoVentaActivo, "false");
+                            dbHelperInstance.actualizarEstadoEntrada(idUsuario, idPuntoVentaActivo, "false");
                             puntosVenta = obtenerPuntosDeVentaDesdeBD();
                             adapter.setItems(puntosVenta);
                             adapter.notifyDataSetChanged();
@@ -97,11 +97,11 @@ public class HistorialPuntosdeVenta extends AppCompatActivity {
         );
     }
 
-    private dbHelper dbHelper = new dbHelper(this);
+    private dbHelper dbHelperInstance = dbHelper.getInstance(this);
 
     private List<PuntoVenta> obtenerPuntosDeVentaDesdeBD() {
         int idUsuario = obtenerIdUsuarioDesdeSharedPreferences();
-        List<PuntoVenta> puntosDeVenta = dbHelper.obtenerTodosLosPuntosVenta(idUsuario, false);
+        List<PuntoVenta> puntosDeVenta = dbHelperInstance.obtenerTodosLosPuntosVenta(idUsuario, false);
 
         // Imprimir la información de cada PuntoVenta
         for (PuntoVenta puntoVenta : puntosDeVenta) {

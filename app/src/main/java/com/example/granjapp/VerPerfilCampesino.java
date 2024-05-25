@@ -37,7 +37,7 @@ public class VerPerfilCampesino extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_ver_perfil_campesino);
-        dbHelper db = new dbHelper(this);
+        dbHelper dbHelperInstance = dbHelper.getInstance(this);
 
         idUsuario = getIntent().getIntExtra("id", -1);
 
@@ -47,8 +47,8 @@ public class VerPerfilCampesino extends AppCompatActivity {
         nombreGranjaTextView = findViewById(R.id.NombreGranjaC);
         sobreMiEditText = findViewById(R.id.SobremiC);
 
-        List<String> rutasImagenes = db.obtenerImagenesProductos(idUsuario);
-        List<String> descripciones = db.ObtenerDescripciones(idUsuario);
+        List<String> rutasImagenes = dbHelperInstance.obtenerImagenesProductos(idUsuario);
+        List<String> descripciones = dbHelperInstance.ObtenerDescripciones(idUsuario);
 
         List<CarouselItem> list = new ArrayList<>();
         for (int i = 0; i < rutasImagenes.size(); i++) {
@@ -78,8 +78,8 @@ public class VerPerfilCampesino extends AppCompatActivity {
 
     private void cargarPerfilCampesino() {
         // Realizar la consulta a la base de datos para obtener los datos del campesino
-        dbHelper db = new dbHelper(this);
-        Campesino campesino = db.obtenerDatosCampesino(idUsuario);
+        dbHelper dbHelperInstance = dbHelper.getInstance(this);
+        Campesino campesino = dbHelperInstance.obtenerDatosCampesino(idUsuario);
 
         // Verificar si se obtuvieron los datos correctamente
         if (campesino != null) {

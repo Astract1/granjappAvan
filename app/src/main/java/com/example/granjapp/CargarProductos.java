@@ -149,7 +149,7 @@ public class CargarProductos extends AppCompatActivity {
 
         if (rutaImagen != null) {
             // Llamar al método de la base de datos para guardar el producto con la ruta de la imagen
-            dbHelper db = new dbHelper(this);
+            dbHelper db = dbHelper.getInstance(this);
             db.agregarProducto(idUsuario, nombreProducto, precioProducto, cantidadProducto, descripcionProducto, rutaImagen);
             mostrarMensaje("Producto guardado correctamente");
         } else {

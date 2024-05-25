@@ -62,8 +62,9 @@ public class PerfilCampesinoActivity extends AppCompatActivity {
 
     private void cargarPerfilCampesino() {
         // Realizar la consulta a la base de datos para obtener los datos del campesino
-        dbHelper db = new dbHelper(this);
-        Campesino campesino = db.obtenerDatosCampesino(idUsuario);
+        dbHelper dbHelperInstance = dbHelper.getInstance(this);
+
+        Campesino campesino = dbHelperInstance.obtenerDatosCampesino(idUsuario);
 
         // Verificar si se obtuvieron los datos correctamente
         if (campesino != null) {
@@ -80,8 +81,8 @@ public class PerfilCampesinoActivity extends AppCompatActivity {
 
     private void CargarInformacionSobreMi() {
         try {
-            dbHelper db = new dbHelper(this);
-            String sobreMi = db.ObtenerInformacionSobreMi(idUsuario);
+            dbHelper dbHelperInstance = dbHelper.getInstance(this);
+            String sobreMi = dbHelperInstance.ObtenerInformacionSobreMi(idUsuario);
 
             if (sobreMi != null) { // Verificar si se obtuvo información válida
                 sobreMiEditText.setText(sobreMi);
@@ -99,8 +100,8 @@ public class PerfilCampesinoActivity extends AppCompatActivity {
         if (!sobreMi.isEmpty()) {
             if (sobreMi.length() <= 100) {
                 try {
-                    dbHelper db = new dbHelper(this);
-                    db.guardarInformacionSobreMi(idUsuario, sobreMi);
+                    dbHelper dbHelperInstance = dbHelper.getInstance(this);
+                    dbHelperInstance.guardarInformacionSobreMi(idUsuario, sobreMi);
                     Toast.makeText(this, "Información sobre mí guardada correctamente", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) { // Manejo de excepciones
                     Toast.makeText(this, "Error al guardar la información sobre mí", Toast.LENGTH_SHORT).show();

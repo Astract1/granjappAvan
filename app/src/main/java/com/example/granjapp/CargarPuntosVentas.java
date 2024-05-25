@@ -157,10 +157,11 @@ public class CargarPuntosVentas extends AppCompatActivity implements OnMapReadyC
 
 
 
-    private dbHelper dbHelper = new dbHelper(this);
+    private dbHelper dbHelperInstance = dbHelper.getInstance(this);
+
 
     private List<PuntoVenta> obtenerDatosDeLaBaseDeDatos() {
-        return dbHelper.obtenerPuntosVentaActivos();
+        return dbHelperInstance.obtenerPuntosVentaActivos();
     }
 
 

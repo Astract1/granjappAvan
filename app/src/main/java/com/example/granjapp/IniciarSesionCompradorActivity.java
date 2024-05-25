@@ -40,8 +40,8 @@ public class IniciarSesionCompradorActivity extends AppCompatActivity {
         String contraseña = editTextContraseñaComprador.getText().toString().trim();
 
         // Validar credenciales con la base de datos
-        dbHelper dbHelper = new dbHelper(this);
-        boolean credencialesValidas = dbHelper.validarCredencialesComprador(correo, contraseña);
+        dbHelper dbHelperInstance = dbHelper.getInstance(this);
+        boolean credencialesValidas = dbHelperInstance.validarCredencialesComprador(correo, contraseña);
 
         if (credencialesValidas) {
             Intent intent = new Intent(IniciarSesionCompradorActivity.this, MenuCompradorActivity.class);
